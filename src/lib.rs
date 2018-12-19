@@ -216,6 +216,7 @@ pub use readwrite::{
     Reader,
     Store,
     Writer,
+    Iter,
 };
 
 pub use value::{
