@@ -16,7 +16,7 @@ use lmdb::{
     Cursor,
     Database,
     Iter as LmdbIter,
-    RoCursor,
+    // RoCursor,
     RoTransaction,
     RwTransaction,
     Transaction,
@@ -54,7 +54,7 @@ where
 
 pub struct Iter<'env> {
     iter: LmdbIter<'env>,
-    cursor: RoCursor<'env>,
+    // cursor: RoCursor<'env>,
 }
 
 impl<'env, K> Writer<'env, K>
@@ -122,7 +122,7 @@ where
         self.tx.abort();
     }
 
-    pub fn iter_start(&self, store: Store) -> Result<Iter, StoreError> {
+    pub fn iter_start(&self, store: Store) -> Result<Iter<'env>, StoreError> {
         let mut cursor = self.tx.open_ro_cursor(store.0).map_err(StoreError::LmdbError)?;
 
         // We call Cursor.iter() instead of Cursor.iter_start() because
@@ -137,16 +137,16 @@ where
 
         Ok(Iter {
             iter,
-            cursor,
+            // cursor,
         })
     }
 
-    pub fn iter_from(&self, store: Store, k: K) -> Result<Iter, StoreError> {
+    pub fn iter_from(&self, store: Store, k: K) -> Result<Iter<'env>, StoreError> {
         let mut cursor = self.tx.open_ro_cursor(store.0).map_err(StoreError::LmdbError)?;
         let iter = cursor.iter_from(k);
         Ok(Iter {
             iter,
-            cursor,
+            // cursor,
         })
     }
 }
