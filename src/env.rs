@@ -177,6 +177,13 @@ impl Rkv {
     }
 }
 
+impl Rkv {
+    /// Flush data buffers to disk.
+    pub fn sync(&self, force: bool) -> Result<(), StoreError> {
+        self.env.sync(force).map_err(|e| e.into())
+    }
+}
+
 #[cfg(test)]
 mod tests {
     extern crate byteorder;
